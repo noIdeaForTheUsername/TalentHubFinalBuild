@@ -1,0 +1,29 @@
+<app-header/>
+
+<main class="chat-wrap">
+  <mat-card class="blurred-card chat-card">
+    <mat-card-title>
+      <h1><span class="text-gradient">@if (otherProfile()) { {{'Czat: ' + otherProfile().login}} } @else { Czat }</span></h1>
+      <a [routerLink]="`/profiles/${otherProfile()?.id}`">Zobacz profil</a>
+    </mat-card-title>
+
+    <mat-card-content>
+      <app-loading [loading]="loading()" [error]="globalError()"/>
+      @if (globalError()) {
+        <div class="error">{{globalError()}}</div>
+        <div class="actions"><button mat-button (click)="ngOnInit()">Spróbuj ponownie</button></div>
+      }
+      @else if (!loading()) {
+        <div class="messages" #scroll>
+          @for (m of messages(); track m.id) {
+            <app-chat-message [message]="m" [myId]="myId()!"></app-chat-message>
+          }
+        </div>
+
+        <div class="input-row">
+          <app-chat-input (send)="onSend($event)"></app-chat-input>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+</main>

@@ -1,0 +1,41 @@
+.chat-wrap {
+  padding: 16px;
+  mat-card-title {
+    margin: 16px 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--mat-sys-primary);
+
+    a {
+      margin: 0;
+    }
+  }
+}
+
+.chat-card {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.messages {
+  height: 60vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+}
+
+.input-row {
+  padding: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+}
+
+.error {
+  color: #c0392b;
+  padding: 12px;
+}

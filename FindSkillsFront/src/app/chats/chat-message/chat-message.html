@@ -1,0 +1,11 @@
+@let message = this.message();
+
+<div class="message" [class.me]="message.senderId === myId()" [class.other]="message.senderId !== myId()">
+  @if (displayLogin()) {
+    <p class="sender">{{message.senderLogin}}</p>
+  }
+  <div class="card">
+    <div class="content">{{message.content}}</div>
+    <div class="date">{{message.timestamp | date:'short'}}</div>
+  </div>
+</div>

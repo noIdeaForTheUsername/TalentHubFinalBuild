@@ -1,0 +1,96 @@
+<app-header></app-header>
+
+@let post = this.post();
+
+<main>
+
+  <h1 class="page-header"><span class="text-gradient">{{typeTitle()}}</span></h1>
+
+  @if (post) {
+    <!-- Post action buttons -->
+    @if (own()) {
+    <section class="action-buttons">
+      <button class="outline" (click)="removePost()">Usuń</button>
+      @if (!editMode()) {
+        <button class="gradient" (click)="enterEdit()">Edytuj</button>
+      } @else {
+        <button class="gradient outline" (click)="cancelEdit()">Anuluj</button>
+      }
+    </section>
+  }
+
+  <!-- EDIT FORM -->
+  @if (editMode() && post) {
+    <div class="edit-block">
+      <app-post-form [type]="post.type" [post]="post" submitLabel="Zapisz" (submitPost)="submitEdit($event)" title="Edytuj post"/>
+      <app-loading [error]="postService.error()" [loading]="postService.loading()"></app-loading>
+    </div>
+  }
+  <!-- MAIN VIEW -->
+  @else {
+    <!-- Main card -->
+      <mat-card class="blurred-card">
+        <mat-card-content class="main">
+          @if (post.type == "project") { <img src="project.png" alt="Project"> }
+          @else if (post.type == "competition") { <img src="competition.webp" alt="Competition"> }
+          <div class="profile-meta">
+            <h1><span class="text-gradient">{{post.name}}</span></h1>
+            <p>
+              {{post.remote ? "Zdalny" : "Stacjonarny"}}
+              {{typeTitle()}}:
+              {{post.subject}}
+            </p>
+            <p>
+              @if (author()) {
+                Utworzony przez użytkownika: <a [routerLink]="`/profiles/${author()!.id}`">{{author()!.login}}</a>
+              }
+            </p>
+            <p>
+              {{post | readableClass}}
+            </p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Bottom cards -->
+      <div class="description-container">
+        @if (true) {
+          <mat-card class="blurred-card meta">
+            <mat-card-content>
+              <h2>Informacje</h2>
+              <ul>
+                <li>{{typeTitle()}}</li>
+                @if (author()) { <li>Twórca: <a [routerLink]="`/profiles/${author()!.id}`">{{author()!.login}}</a></li> }
+                <li>Poziom: {{post | readableClass:true}}</li>
+                <li>Tryb pracy: {{post.remote ? "Zdalny" : "Stacjonarny"}}</li>
+                <li>Miejscowość: {{post.city || "nie ustawiono"}}</li>
+                <li>Termin: {{post | dateFromTo}}</li>
+                <li>Liczba osób: {{post | peopleNumber}}</li>
+              </ul>
+            </mat-card-content>
+          </mat-card>
+        }
+        
+        <mat-card class="blurred-card description">
+          <mat-card-content>
+            <h2>Opis:</h2>
+            <p>{{post.description}}</p>
+            @if (post.link) {
+              <p>
+                <span class="text-gradient">Link do strony: </span> 
+                <a [href]="post.link" target="_blank" rel="noopener noreferrer">{{post.link}}</a>
+              </p>
+            }
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Comments Section -->
+      <app-post-comment-section
+        class="blurred-card"
+        [postId]="post.id" [postOwnerId]="post.authorId"/>
+    }
+  } @else {
+    <app-loading [error]="postService.error()" [loading]="postService.loading()"></app-loading>
+  }
+</main>

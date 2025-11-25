@@ -1,0 +1,56 @@
+:host { display: block; }
+
+h1 {
+  display: block;
+  text-align: center;
+  margin: 0px auto 64px;
+}
+
+.profiles-wrap {
+  padding: 96px 16px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.search-card {
+  margin-bottom: 16px;
+  padding: 12px;
+}
+
+.cards-grid {
+  display: grid;
+  // align-content: stretch;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.full { width: 100%; }
+
+.filters-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+}
+
+.two-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.three-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+.results-header {
+  margin: 16px 0 12px;
+  font-size: 1.2rem;
+  font-weight: 500;
+}

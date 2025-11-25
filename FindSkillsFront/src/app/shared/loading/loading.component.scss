@@ -1,0 +1,19 @@
+:host {
+  display: block;
+  padding: 16px 0;
+}
+
+.spinner-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.loading-error {
+  color: var(--mat-sys-error);
+  background: rgba(0, 0, 0, 0.06);
+  padding: 12px;
+  border: 2px solid var(--mat-sys-error);
+  border-radius: 6px;
+}

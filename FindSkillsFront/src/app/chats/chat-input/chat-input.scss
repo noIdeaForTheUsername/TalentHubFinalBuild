@@ -1,0 +1,24 @@
+.chat-input {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.chat-input textarea {
+  font-family: 'Roboto', sans-serif;
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  outline: 2px solid gray;
+  resize: vertical;
+  transition: outline-color 0.5s ease-in-out;
+
+  &:focus {
+    outline-color: var(--mat-sys-secondary);
+  }
+}
+
+.chat-input button {
+  height: 40px;
+  transition: background-color 0.5s ease-in-out;
+}

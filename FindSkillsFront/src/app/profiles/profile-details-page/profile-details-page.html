@@ -1,0 +1,125 @@
+<app-header></app-header>
+
+@let profile = this.profile();
+
+<main class="profiles-wrap">
+  @if (profile) {
+  <!-- MAIN VIEW -->
+
+    <!-- TOP BUTTONS -->
+    <section class="action-buttons">
+      @if (own()) {
+        <button class="outline logout" (click)="logout()">Wyloguj się</button>
+        <button class="outline" (click)="addPasskey()" [disabled]="passkeyAdding()">
+          {{passkeyAdding() ? "Rejestrowanie klucza..." : "Dodaj klucz dostępu (bezpieczna i szybka metoda logowania)"}}
+        </button>
+        <button class="gradient" (click)="toggleEdit()">{{ editMode() ? 'Zapisz' : 'Edytuj profil' }}</button>
+        @if (editMode()) {
+          <button class="outline" (click)="cancelEdit()">Anuluj</button>
+        }
+      }
+      @else {
+        <button class="outline" (click)="cancelEdit()" routerLink="/profiles">Powrót do strony użytkowników</button>
+      }
+    </section>
+
+    <!-- EDIT PROFILE MODE -->
+    @if (editMode() && form) {
+      <app-form title="Edytuj profil">
+        <form class="form-grid" [formGroup]="form" (ngSubmit)="toggleEdit()">
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Typ szkoły</mat-label>
+            <mat-select formControlName="schoolType">
+              <mat-option value="primary">Podstawowa</mat-option>
+              <mat-option value="secondary">Średnia</mat-option>
+              <mat-option value="university">Wyższa</mat-option>
+            </mat-select>
+            @if (form.get('schoolType')?.touched && form.get('schoolType')?.invalid) {
+              <mat-error>Wybierz typ szkoły (pole wymagane).</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Klasa / Rok</mat-label>
+            <input matInput type="number" formControlName="schoolClass" />
+              @if (form.get('schoolClass')?.hasError('schoolClassRange')) {
+                <mat-error>Klasa poza zakresem.</mat-error>
+              }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Miasto</mat-label>
+            <input matInput formControlName="city"/>
+            @if (form.get('city')?.touched && form.get('city')?.invalid) {
+              <mat-error>Wpisz miejscowość (pole wymagane).</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Główne umiejętności/przedmioty (krótko; oddzielaj przecinkiem)</mat-label>
+            <input matInput formControlName="favoriteSubjects" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Więcej o sobie...</mat-label>
+            <textarea matInput rows="4" formControlName="bio"></textarea>
+          </mat-form-field>
+        </form>
+      </app-form>
+    }
+    <!-- STANDARD MODE -->
+    @else {
+
+      <!-- PROFILE CARDS -->
+
+      <!-- Main card -->
+      <mat-card class="blurred-card">
+        <mat-card-content>
+          <img src="avatar.png" alt="Profile">
+          <div>
+            <h1><span class="text-gradient">{{profile.login}}</span></h1>
+            <p>{{profile | readableClass}}<br/>
+            {{profile.city}}</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Bottom cards -->
+      <div class="description-container">
+        @if (skillsList().length > 0) {
+          <mat-card class="blurred-card skills">
+            <mat-card-content>
+              <h2>Główne umiejętności:</h2>
+              <ul>
+                @for (skill of skillsList(); track $index) {
+                  <li>{{skill | titlecase}}</li>
+                }
+              </ul>
+            </mat-card-content>
+          </mat-card>
+        }
+        
+        @if (profile.bio) {
+          <mat-card class="blurred-card bio">
+            <mat-card-content>
+              <h2>O mnie:</h2>
+              <p>{{profile.bio}}</p>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+
+      <!-- CHAT BUTTON -->
+      @if (!own()) { <button class="gradient" (click)="openChat()">Otwórz czat</button> }
+
+      <!-- POSTS -->
+      @if (profilePosts().length > 0) {
+        <h2>{{own() ? "Twoje posty:" : "Posty tego użytkownika:"}}</h2>
+      }
+      @for (post of profilePosts(); track post.id) {
+        <app-post-card [post]="post"></app-post-card>
+      }
+    }
+  }
+  <app-loading [error]="profileService.error() || postService.error()" [loading]="profileService.loading() || postService.loading()"></app-loading>
+</main>

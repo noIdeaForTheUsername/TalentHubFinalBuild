@@ -1,0 +1,10 @@
+<mat-card class="blurred-card form-card mat-elevation-z3">
+  <mat-card-header>
+    <mat-card-title><span class="text-gradient">{{ title() }}</span></mat-card-title>
+    @if (subtitle()) { <mat-card-subtitle>{{ subtitle() }}</mat-card-subtitle> }
+  </mat-card-header>
+
+  <mat-card-content>
+    <ng-content></ng-content>
+  </mat-card-content>
+</mat-card>

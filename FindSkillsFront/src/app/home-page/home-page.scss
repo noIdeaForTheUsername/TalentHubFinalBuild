@@ -1,0 +1,55 @@
+/* Styles for the home page using Angular Material structure */
+
+.content {
+	padding: 96px 16px 24px; /* leave space for fixed header */
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.banner {
+	text-align: center;
+	padding: 32px;
+
+	.app-name {
+    margin-top: 0;
+		font-size: 2rem;
+    line-height: 1.2;
+	}
+}
+
+.cards-container {
+	display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+	gap: 16px;
+	margin-top: 24px;
+  > * {
+    flex-grow: 1;
+  }
+}
+
+.about-cards-container {
+  margin-top: 32px;
+  gap: 32px;
+
+  .about-cards-flex {
+    display: flex;
+    // width: max-content;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    mat-card {
+      border: 2px solid var(--mat-sys-primary);
+      background-color: var(--mat-sys-surface-container-high);
+    }
+  }
+}
+
+/* Small screens tweaks */
+@media (max-width: 480px) {
+	.banner { padding: 20px; }
+	.app-name { font-size: 1.4rem; }
+}
+
+

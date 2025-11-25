@@ -1,0 +1,44 @@
+<app-header></app-header>
+
+<main class="login-wrap">
+  <app-form title="Logowanie" subtitle="Zaloguj się, aby uzyskać dostęp do platformy">
+    <div>
+      <a routerLink="/register">Nie masz jeszcze konta? Zarejestruj się</a>
+    </div>
+
+    <form class="form-grid" [formGroup]="form" (ngSubmit)="submit()">
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Login</mat-label>
+        <input matInput type="text" formControlName="login" autocomplete="username" />
+        @if (form.get('login')?.hasError('required') && form.get('login')?.touched) {
+          <mat-error>Login jest wymagany.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Hasło</mat-label>
+        <input matInput type="password" formControlName="password" autocomplete="current-password" />
+        @if (form.get('password')?.hasError('required') && form.get('password')?.touched) {
+          <mat-error>Hasło jest wymagane.</mat-error>
+        }
+      </mat-form-field>
+
+      <app-loading [error]="authService.error()" [loading]="authService.loading()"></app-loading>
+
+      <section class="action-buttons">
+        <button class="gradient" [disabled]="authService.loading()">
+          @if (authService.loading()) {
+            Logowanie...
+          } @else {
+            Zaloguj się
+          }
+        </button>
+        <button type="button" class="outline" (click)="loginWithPasskey()" [disabled]="authService.loading()">
+          Zaloguj się za pomocą klucza dostępu
+        </button>
+      </section>
+
+    </form>
+  </app-form>
+</main>

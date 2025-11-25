@@ -1,0 +1,16 @@
+
+  <mat-toolbar color="primary" class="toolbar mat-elevation-z4">
+    <button class="logo" routerLink="/">Talent Hub</button>
+    <nav class="nav-buttons" aria-label="Główna nawigacja">
+      <button class="stronger-hover-animation" mat-button aria-label="Strona główna" routerLink="/">Strona główna</button>
+      <button class="stronger-hover-animation" mat-button aria-label="Konkursy" routerLink="/posts/competitions">Konkursy</button>
+      <button class="stronger-hover-animation" mat-button aria-label="Projekty" routerLink="/posts/projects">Projekty</button>
+      <button class="stronger-hover-animation" mat-button aria-label="Użytkownicy" routerLink="/profiles">Użytkownicy</button>
+      @if (loggedIn() && userId()) {
+        <button class="stronger-hover-animation" mat-button aria-label="Moje czaty" routerLink="/my-chats">Czaty</button>
+      }
+    </nav>
+    <button class="account-button stronger-hover-animation" mat-button aria-label="Konto" (click)="navigateToAccount()">
+      {{ loggedIn() ? 'Profil i konto' : 'Zaloguj się' }}
+    </button>
+  </mat-toolbar>

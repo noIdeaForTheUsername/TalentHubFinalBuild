@@ -1,0 +1,9 @@
+:host { display: block; }
+
+.form-card {
+  padding: 12px;
+  background: var(--mat-sys-surface-container-highest);
+}
+
+/* Internal component styles only. Shared form helpers were moved to global `custom-styles.scss` so
+   projected content (ng-content) receives the styles even with view encapsulation. */

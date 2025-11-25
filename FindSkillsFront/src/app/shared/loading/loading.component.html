@@ -1,0 +1,8 @@
+@if (getDisplayError()) {
+  <div class="loading-error">{{ getDisplayError() }}</div>
+}
+@else if (loading()) {
+  <div class="spinner-wrap">
+    <mat-progress-spinner mode="indeterminate" diameter="36"></mat-progress-spinner>
+  </div>
+}

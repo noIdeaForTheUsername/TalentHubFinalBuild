@@ -1,0 +1,4 @@
+<div class="chat-input">
+  <textarea [(ngModel)]="text" [placeholder]="placeholder()" rows="2" (keydown)="onKeydown($event)"></textarea>
+  <button mat-flat-button color="secondary" (click)="onSend()" [disabled]="!text.trim()">Wyślij</button>
+</div>

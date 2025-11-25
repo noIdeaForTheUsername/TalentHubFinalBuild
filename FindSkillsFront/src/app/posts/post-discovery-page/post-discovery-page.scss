@@ -1,0 +1,38 @@
+:host { display: block; }
+
+h1 {
+  display: block;
+  text-align: center;
+  margin: 0px auto 64px;
+}
+
+.posts-wrap {
+  padding: 96px 16px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.search-card {
+  margin-bottom: 16px;
+  padding: 12px;
+}
+
+.cards-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.page-info {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 1rem;
+}
+
+.full { width: 100%; }
+
+.page-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 24px 0;
+}

@@ -1,0 +1,84 @@
+<app-header></app-header>
+
+<main class="register-wrap">
+  <app-form title="Rejestracja" subtitle="Utwórz konto, aby znaleźć współpracowników do projektów i konkursów">
+    <div>
+      <a routerLink="/login">Masz już konto? Zaloguj się</a>
+    </div>
+    
+    <form class="form-grid" [formGroup]="form" (ngSubmit)="submit()">
+
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Login</mat-label>
+          <input matInput type="text" formControlName="login" autocomplete="username" />
+          @if (hasError('login')) {
+            <mat-error>{{ getErrorMessage('login') }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Hasło</mat-label>
+          <input matInput type="password" formControlName="password" autocomplete="new-password" />
+          @if (hasError('password')) {
+            <mat-error>{{ getErrorMessage('password') }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Powtórz hasło</mat-label>
+          <input matInput type="password" formControlName="confirmPassword" autocomplete="new-password" />
+          @if (hasError('confirmPassword')) {
+            <mat-error>{{ getErrorMessage('confirmPassword') }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Typ szkoły</mat-label>
+          <mat-select formControlName="schoolType">
+            <mat-option value="primary">Podstawowa</mat-option>
+            <mat-option value="secondary">Średnia</mat-option>
+            <mat-option value="university">Wyższa</mat-option>
+          </mat-select>
+          @if (hasError('schoolType')) {
+            <mat-error>{{ getErrorMessage('schoolType') }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Klasa / Rok nauki</mat-label>
+          <input matInput type="number" formControlName="schoolClass" [attr.min]="1" [attr.max]="getMaxClass()" />
+          @if (hasError('schoolClass')) {
+            <mat-error>{{ getErrorMessage('schoolClass') }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Miejscowość</mat-label>
+          <input matInput type="text" formControlName="city" />
+          @if (hasError('city')) {
+            <mat-error>{{ getErrorMessage('city') }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Główne umiejętności/przedmioty (krótko; oddzielaj przecinkiem)</mat-label>
+          <input matInput type="text" formControlName="favSubjects" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Więcej o sobie...</mat-label>
+          <textarea matInput rows="4" formControlName="about"></textarea>
+        </mat-form-field>
+
+      <app-loading [error]="authService.error()" [loading]="authService.loading()"></app-loading>
+      <button type="submit" class="gradient" [disabled]="authService.loading()">
+          @if (authService.loading()) {
+            Rejestracja w toku...
+          } @else {
+            Utwórz konto
+          }
+        </button>
+
+    </form>
+  </app-form>
+</main>

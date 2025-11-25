@@ -1,0 +1,96 @@
+MariaDB / XAMPP setup and sample-data instructions
+
+1) Start MariaDB (XAMPP):
+   - Open XAMPP Control Panel and start "MySQL".
+
+2) Create database + user (run in PowerShell or MySQL shell):
+
+-- open MySQL shell as root (PowerShell):
+mysql -u root -p
+
+-- then run these SQL commands (or paste below into the shell):
+CREATE DATABASE IF NOT EXISTS `findskills_dev` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS 'findskills_user'@'localhost' IDENTIFIED BY 'findskills_pass';
+GRANT ALL PRIVILEGES ON `findskills_dev`.* TO 'findskills_user'@'localhost';
+FLUSH PRIVILEGES;
+
+Notes:
+- If your XAMPP MySQL root has no password, omit `-p` when calling `mysql`.
+- If you prefer Docker instead of XAMPP, run a MariaDB container and map ports.
+
+3) Table creation (optional)
+   - If you run the Nest app with TypeORM `synchronize: true`, tables are created automatically.
+   - If you prefer to create the `profiles` table by hand, run:
+
+CREATE TABLE IF NOT EXISTS `profiles` (
+  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `login` VARCHAR(100) NOT NULL UNIQUE,
+  `schoolType` VARCHAR(32) DEFAULT NULL,
+  `classMin` INT DEFAULT NULL,
+  `classMax` INT DEFAULT NULL,
+  `favoriteSubjects` TEXT DEFAULT NULL,
+  `bio` TEXT DEFAULT NULL,
+  `city` VARCHAR(100) DEFAULT NULL,
+  `passwordHash` VARCHAR(255) DEFAULT NULL
+);
+
+-- Optional: projects table (matches backend fields used in samples)
+CREATE TABLE IF NOT EXISTS `projects` (
+   `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   `name` VARCHAR(255) NOT NULL,
+   `description` TEXT DEFAULT NULL,
+   `link` VARCHAR(512) DEFAULT NULL,
+   `author_id` INT DEFAULT NULL,
+   `type` ENUM('project','competition') NOT NULL DEFAULT 'project',
+   `remote` TINYINT(1) DEFAULT 0,
+   `subject` VARCHAR(255) DEFAULT NULL,
+   `school_type` VARCHAR(32) DEFAULT NULL,
+   `min_school_class` INT DEFAULT NULL,
+   `max_school_class` INT DEFAULT NULL,
+   `city` VARCHAR(100) DEFAULT NULL,
+   `begin_date` DATETIME DEFAULT NULL,
+   `end_date` DATETIME DEFAULT NULL,
+   `min_people` INT DEFAULT NULL,
+   `max_people` INT DEFAULT NULL,
+   `current_people` INT DEFAULT NULL,
+   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+4) Install helper packages (run in project folder):
+   npm install --save mysql2 bcryptjs
+
+5) Insert sample data (recommended: use provided seed script)
+   - I added `scripts/seed-profiles.js` which will create the `profiles` table (if missing)
+     and insert 4 sample users with bcrypt-hashed passwords.
+
+   - Run the seed script (from `find-skills-backend` folder):
+     node scripts/seed-profiles.js
+
+   - The script reads connection information from env vars (optional):
+      DB_HOST (default: localhost)
+      DB_PORT (default: 3306)
+      DB_USER (default: findskills_user)
+      DB_PASSWORD (default: findskills_pass)
+      DB_NAME (default: findskills_dev)
+
+7) Seed projects & contests
+    - A helper script `scripts/seed-projects.js` creates `projects` and `contests` and inserts sample rows.
+    - Run:
+       node scripts/seed-projects.js
+
+    - The script uses the same env vars as above (DB_HOST/DB_PORT/DB_USER/DB_PASSWORD/DB_NAME).
+
+6) Alternative: use the running Nest app to create users
+   - Start the backend (make sure TypeORM is configured in `src/app.module.ts`):
+     npm run start:dev
+   - Use the API `POST /api/profiles` to register users (the endpoint will hash passwords).
+
+7) Troubleshooting
+   - If TypeORM fails to connect, verify env vars and that MySQL/MariaDB is running.
+   - If ports conflict with another MySQL installation, change XAMPP/MySQL port or use Docker.
+
+8) Example: PowerShell one-liners to run SQL (replace password as needed):
+   mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS findskills_dev CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+   mysql -u root -p -e "CREATE USER IF NOT EXISTS 'findskills_user'@'localhost' IDENTIFIED BY 'findskills_pass'; GRANT ALL PRIVILEGES ON findskills_dev.* TO 'findskills_user'@'localhost'; FLUSH PRIVILEGES;"
+
+--- End of file

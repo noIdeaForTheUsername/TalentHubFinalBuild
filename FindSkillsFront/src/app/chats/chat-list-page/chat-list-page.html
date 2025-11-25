@@ -1,0 +1,49 @@
+<app-header></app-header>
+
+<main class="chat-list-wrap">
+  <h1><span class="text-gradient">Czaty</span></h1>
+
+  @if (loading() || error()) {
+    <app-loading [loading]="loading()" [error]="error()"></app-loading>
+  }
+  <!-- @else if (error()) {
+    <mat-card class="error-card">
+      <mat-card-content>
+        <p class="error-message">{{error()}}</p>
+        <button mat-button color="primary" (click)="loadChats()">Spróbuj ponownie</button>
+      </mat-card-content>
+    </mat-card>
+  } -->
+  @else if (chats().length === 0) {
+    <mat-card class="blurred-card empty-card">
+      <mat-card-content>
+        <p class="empty-message">Nie masz jeszcze żadnych rozmów</p>
+        <button mat-raised-button color="primary" routerLink="/profiles">Znajdź użytkowników</button>
+      </mat-card-content>
+    </mat-card>
+  }
+  @else {
+    <mat-card class="blurred-card chat-list">
+      @for (chat of chats(); track chat.id) {
+        <mat-card class="hover-animation chat-card"
+          [class.unread]="chat.unreadCount > 0" (click)="openChat(chat)">
+          <mat-card-content class="chat-content">
+            <img src="chat.png" alt="Czat"/>
+            <div class="chat-info">
+              <h3 class="chat-login">{{chat.other.login}}</h3>
+              @if (chat.lastMessage) {
+                <p class="last-message">
+                  @if (chat.unreadCount > 0) { <strong class="text-gradient">Nowe: {{chat.unreadCount}}</strong> | }
+                  {{chat.lastMessage.content}}
+                </p>
+              }
+              @else {
+                <p class="no-messages"><i>Brak wiadomości</i></p>
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </mat-card>
+  }
+</main>

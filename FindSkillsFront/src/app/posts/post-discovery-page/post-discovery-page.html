@@ -1,0 +1,120 @@
+<app-header></app-header>
+
+<main class="posts-wrap">
+  <h1><span class="text-gradient">{{ pageTitle() }}</span></h1>
+  
+  <section class="action-buttons">
+    @if (isLoggedIn()) { <button class="gradient" [routerLink]="pageType() === 'competition' ? '/posts/competitions/create' : '/posts/projects/create'">Utwórz nowy</button> }
+    <button [class]="filtersOpen() ? 'outline' : 'gradient'" (click)="filtersOpen.set(!filtersOpen())">{{ filtersOpen() ? 'Ukryj filtry' : 'Wyszukaj lub filtruj' }}</button>
+  </section>
+
+  <!-- SEARCH FILTERS FORM -->
+
+  @if (filtersOpen()) {
+    <mat-card class="blurred-card search-card mat-elevation-z2">
+      <div class="filters-rows">
+        <!-- Row 1 -->
+        <div class="row">
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Przedmiot/umiejętność</mat-label>
+            <input matInput placeholder="Przedmiot" [value]="subject() ?? ''" (input)="subject.set($any($event.target).value || undefined)" />
+          </mat-form-field>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="row two-cols">
+          <mat-form-field appearance="outline">
+            <mat-label>Miasto</mat-label>
+            <input matInput placeholder="Miasto" [value]="city() ?? ''" (input)="city.set($any($event.target).value || undefined)" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Typ pracy</mat-label>
+            <mat-select [value]="remote()" (selectionChange)="remote.set($any($event.value))">
+              <mat-option value="all">Wszystkie</mat-option>
+              <mat-option value="remote">Tylko zdalne</mat-option>
+              <mat-option value="onsite">Tylko stacjonarne</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="row three-cols">
+          <mat-form-field appearance="outline">
+            <mat-label>Typ szkoły</mat-label>
+            <mat-select [value]="schoolType() ?? null" (selectionChange)="schoolType.set($any($event.value) ?? null)">
+              <mat-option [value]="null">Wszystkie</mat-option>
+              <mat-option value="primary">Podstawowa</mat-option>
+              <mat-option value="secondary">Średnia</mat-option>
+              <mat-option value="university">Wyższa</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Min. klasa</mat-label>
+            <input matInput type="number" [min]="classBounds().min" [max]="classBounds().max" [value]="minSchoolClass() ?? ''" [disabled]="!schoolType()"
+            (input)="minSchoolClass.set($any($event.target).value ? +$any($event.target).value : undefined)" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Max. klasa</mat-label>
+            <input matInput type="number" [min]="classBounds().min" [max]="classBounds().max" [value]="maxSchoolClass() ?? ''" [disabled]="!schoolType()"
+            (input)="maxSchoolClass.set($any($event.target).value ? +$any($event.target).value : undefined)" />
+          </mat-form-field>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="row">
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Nazwa lub opis</mat-label>
+            <input matInput placeholder="Nazwa lub opis" [value]="q() ?? ''" (input)="q.set($any($event.target).value || undefined)" />
+          </mat-form-field>
+        </div>
+
+        <section class="action-buttons">
+          <button class="gradient" (click)="performSearch()">Zastosuj</button>
+          @if (authService.loggedIn()) {<button class="outline" (click)="applyDefaultFilters()">
+            <span class="text-gradient">Zastosuj sugerowane filtry</span>
+          </button>}
+          <button class="outline" (click)="showAll()">Wyczyść wszystkie filtry</button>
+        </section>
+      </div>
+    </mat-card>
+  }
+
+    <!-- ACTUAL POSTS SECTION -->
+
+    <app-loading [error]="postService.error()" [loading]="postService.loading()"></app-loading>
+
+    <h2 class="results-header">{{ headerText() }}</h2>
+
+    <section class="cards-grid">
+      @if (posts().length === 0) {
+        <h3>Brak</h3>
+      }
+      @else {
+        @for (p of posts(); track p.id) {
+          <app-post-card [post]="p"></app-post-card>
+        }
+      }
+    </section>
+
+    <!-- PAGE CONTROLS -->
+    @if (!this.postService.loading() && this.pageType()) {
+      @if (this.postService.searchPage() > 1) {
+        <p class="page-info">Strona {{ postService.searchPage() }}</p>
+      }
+      
+      <section class="page-buttons">
+        @if (postService.searchPage() > 1) {
+          <button class="outline" (click)="goToFirstPage()">Pierwsza strona</button>
+        }
+        @if (this.postService.searchPage() != 1) {
+          <button class="outline" (click)="changePage(false)">Poprzednia strona</button>
+        }
+        @if (!this.postService.searchResultsFinalPage()) {
+          <button class="gradient" (click)="changePage(true)">Następna strona</button>
+        }
+      </section>
+    }
+</main>

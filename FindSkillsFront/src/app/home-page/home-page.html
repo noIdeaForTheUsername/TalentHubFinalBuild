@@ -1,0 +1,86 @@
+<app-header></app-header>
+
+<main class="content" role="main">
+  <mat-card class="blurred-card banner mat-elevation-z2">
+    <mat-card-content>
+      <h1 class="app-name"><span class="text-gradient">Talent Hub</span></h1>
+      <p class="app-desc">Znajdź rówieśników o podobnych zdolnościach, z którymi możesz stworzyć projekt lub wziąć
+        udział w konkursie</p>
+    </mat-card-content>
+  </mat-card>
+
+  <h2>Zacznij:</h2>
+
+  <section class="cards-container" aria-label="Funkcje i podstrony">
+    @if (authService.loggedIn()) {
+    <app-card-button routerLink="/posts/competitions" title="Konkursy"
+      description="Znajdź konkurs ze swojego ulubionego przedmiotu" />
+    <app-card-button routerLink="/posts/projects" title="Projekty"
+      description="Stwórz z kimś projekt ze swojej dziedziny" />
+    <app-card-button routerLink="/posts/projects/create" title="Nowy post"
+      description="Dodaj nowy projekt lub konkurs i znajdź ekipę" />
+    <app-card-button routerLink="/profiles" title="Znajdź użytkowników"
+      description="Nawiąż kontakt bez konieczności tworzenia postu" />
+    <app-card-button [routerLink]="`/profiles/${authService.userId()}`" title="Twój profil"
+      description="Daj innym znać, w czym jesteś dobry" />
+    }
+    @else {
+    <app-card-button routerLink="/register" title="Zarejestruj się"
+      description="by zacząć korzystać z serwisu"></app-card-button>
+    <app-card-button routerLink="/login" title="Zaloguj się" description="jeśli już masz konto"></app-card-button>
+    <app-card-button routerLink="/posts/competitions" title="Przeglądaj konkursy"
+      description="Wypróbuj aplikację bez logowania"></app-card-button>
+    }
+  </section>
+
+  <mat-card class="blurred-card about-cards-container">
+    <mat-card-header>
+      <mat-card-title><strong>O stronie</strong></mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="about-cards-flex">
+      <!-- CARD 1 -->
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Działanie</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Talent Hub to aplikacja skierowana głównie do uczniów, mająca za zadanie ułatwić znalezienie innych
+            uczniów o podobnych zdolnościach w celu:</p>
+          <ul>
+            <li>Wzięcia wspólnego udziału w dowolnego rodzaju konkursie grupowym, olimpiadzie, hackathonie itd.</li>
+            <li>Stworzenia razem wspólnego projektu z danej dziedziny</li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- CARD 2 -->
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Możliwości</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ul>
+            <li>Tworzenie profili użytkowników z opisem zainteresowań</li>
+            <li>Dodawanie postów o projektach lub konkursach ze szczegółowymi infomracjami w celu znalezienia grupy</li>
+            <li>Zaawansowane filtry wyszukiwania do projektów, konkursów i użytkowników</li>
+            <li>Komunikacja z innymi użytkownikami wewnątrz platformy</li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- CARD 3 -->
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Cele projektu</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ul>
+            <li>Działanie na korzyść edukacji</li>
+            <li>Zapewnienie uczniom lepszych warunków do brania udziału w konkursach i rozwoju swoich pasji</li>
+            <li>Ułatwienie młodym ludziom nawiązania znajomości według wspólnych zainteresowań</li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+    </mat-card-content>
+  </mat-card>
+</main>

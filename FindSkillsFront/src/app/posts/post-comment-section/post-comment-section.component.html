@@ -1,0 +1,37 @@
+<div class="comment-section">
+  <h2>Wpisy</h2>
+  <p class="info">Publiczne wpisy dotyczące konkursu/projektu. Zgłoś się, zadaj pytanie lub zaproponuj zmianę.
+    @if (postOwnerId() != authService.userId()) { Dostępny jest również <a [routerLink]="`/profiles/${postOwnerId()}/chat`">czat prywatny z twórcą postu</a> }
+  </p>
+
+  @if (loading() || error()) {
+    <app-loading [error]="error()" [loading]="loading()"></app-loading>
+  } @else {
+
+    <!-- Input -->
+    @if (authService.loggedIn()) {
+      <div class="input-row">
+        <app-chat-input 
+          (send)="onSend($event)"
+          placeholder="Napisz wpis..."/>
+      </div>
+    } @else {
+      <p class="login-prompt">Zaloguj się, aby dodać wpis.</p>
+    }
+
+    <!-- Comments -->
+    <div class="comments-container">
+      @if (comments().length === 0) {
+        <p class="no-comments">Brak wpisów. Bądź pierwszy!</p>
+      } @else {
+        @for (comment of comments(); track comment.id) {
+          <app-chat-message
+            [displayLogin]="true"
+            [message]="{ id: comment.id, senderId: comment.authorId, senderLogin: comment.authorLogin, content: comment.content, timestamp: comment.timestamp }"
+            [myId]="myId() || 0">
+          </app-chat-message>
+        }
+      }
+    </div>
+  }
+</div>

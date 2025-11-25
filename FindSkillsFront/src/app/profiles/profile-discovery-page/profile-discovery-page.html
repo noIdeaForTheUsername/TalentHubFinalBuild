@@ -1,0 +1,88 @@
+<app-header></app-header>
+
+<main class="profiles-wrap">
+  <h1><span class="text-gradient">Użytkownicy</span></h1>
+
+  <section class="action-buttons">
+    <button [class]="filtersOpen() ? 'outline' : 'gradient'" (click)="filtersOpen.set(!filtersOpen())">{{ filtersOpen() ? 'Ukryj filtry' : 'Wyszukaj lub filtruj' }}</button>
+  </section>
+
+  <!-- SEARCH FILTERS FORM -->
+  @if (filtersOpen()) {
+    <mat-card class="blurred-card search-card mat-elevation-z2">
+      <div class="filters-rows">
+        <!-- Row 1 -->
+        <div class="row">
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Umiejętności</mat-label>
+            <input matInput placeholder="Umiejętności lub przedmioty" [value]="skills() ?? ''" (input)="skills.set($any($event.target).value || undefined)" />
+          </mat-form-field>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="row two-cols">
+          <mat-form-field appearance="outline">
+            <mat-label>Miasto</mat-label>
+            <input matInput placeholder="Miasto" [value]="city() ?? ''" (input)="city.set($any($event.target).value || undefined)" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Login</mat-label>
+            <input matInput placeholder="Login użytkownika" [value]="login() ?? ''" (input)="login.set($any($event.target).value || undefined)" />
+          </mat-form-field>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="row three-cols">
+          <mat-form-field appearance="outline">
+            <mat-label>Typ szkoły</mat-label>
+            <mat-select [value]="schoolType() ?? null" (selectionChange)="schoolType.set($any($event.value) ?? null)">
+              <mat-option [value]="null">Wszystkie</mat-option>
+              <mat-option value="primary">Podstawowa</mat-option>
+              <mat-option value="secondary">Średnia</mat-option>
+              <mat-option value="university">Wyższa</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Min. klasa</mat-label>
+            <input matInput type="number" [min]="classBounds().min" [max]="classBounds().max" [value]="minSchoolClass() ?? ''" [disabled]="!schoolType()"
+            (input)="minSchoolClass.set($any($event.target).value ? +$any($event.target).value : undefined)" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Max. klasa</mat-label>
+            <input matInput type="number" [min]="classBounds().min" [max]="classBounds().max" [value]="maxSchoolClass() ?? ''" [disabled]="!schoolType()"
+            (input)="maxSchoolClass.set($any($event.target).value ? +$any($event.target).value : undefined)" />
+          </mat-form-field>
+        </div>
+
+        <section class="action-buttons">
+          <button class="gradient" (click)="performSearch()">Zastosuj</button>
+          @if (authService.loggedIn()) {
+            <button class="outline" (click)="resetFilters()">
+              <span class="text-gradient">Zastosuj sugerowane filtry</span>
+            </button>
+          } 
+          <button class="outline" (click)="showAll()">Wyczyść wszystkie filtry</button>
+        </section>
+      </div>
+    </mat-card>
+  }
+
+  <!-- ACTUAL PROFILES SECTION -->
+  <app-loading [error]="profileService.error()" [loading]="profileService.loading()"></app-loading>
+
+  <h2 class="results-header">{{ headerText() }}</h2>
+
+  <section class="cards-grid">
+    @if (profiles().length === 0) {
+      <h3>Brak</h3>
+    }
+    @else {
+      @for (p of profiles(); track p.id) {
+        <app-profile-card [profile]="p"></app-profile-card>
+      }
+    }
+  </section>
+</main>

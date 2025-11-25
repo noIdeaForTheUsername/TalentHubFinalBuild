@@ -1,0 +1,116 @@
+<mat-card class="blurred-card">
+  <mat-card-content>
+    <h1><span class="text-gradient">{{title()}}</span></h1>
+    
+    <!-- TYPE SELECTOR AT TOP (radio) -->
+    <div class="type-selector">
+      <label>Typ</label>
+      <mat-radio-group [value]="selectedType()" (change)="selectedType.set($any($event).value)">
+        <mat-radio-button value="project">Projekt</mat-radio-button>
+        <mat-radio-button value="competition">Konkurs</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <form class="form-grid" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Nazwa</mat-label>
+        <input matInput formControlName="name" />
+        @if (form.get('name')?.touched && form.get('name')?.invalid) {
+          <mat-error>Wpisz nazwę (pole wymagane).</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Przedmiot/dziedzina</mat-label>
+        <input matInput formControlName="subject" />
+        @if (form.get('subject')?.touched && form.get('subject')?.invalid) {
+          <mat-error>Podaj przedmiot (pole wymagane).</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Opis</mat-label>
+        <textarea matInput rows="4" formControlName="description"></textarea>
+        @if (form.get('description')?.touched && form.get('description')?.invalid) {
+          <mat-error>Opisz projekt/konkurs (pole wymagane).</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Typ szkoły</mat-label>
+        <mat-select formControlName="schoolType">
+          <mat-option value="primary">Podstawowa</mat-option>
+          <mat-option value="secondary">Średnia</mat-option>
+          <mat-option value="university">Wyższa</mat-option>
+        </mat-select>
+        @if (form.get('schoolType')?.touched || form.get('schoolType')?.invalid) {
+          <mat-error>Podaj typ szkoły</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Klasa / rok</mat-label>
+        <input matInput type="number" formControlName="schoolClass" min="1" />
+        @if ((form.get('schoolClass')?.touched || form.get('schoolType')?.touched) && form.errors?.['schoolClassRequiresType']) {
+          <mat-error>Podaj typ szkoły, aby ustawić klasę/rok.</mat-error>
+        }
+        @if ((form.get('schoolClass')?.touched) && form.errors?.['schoolClassRange']) {
+          <mat-error>Klasa/rok poza dopuszczalnym zakresem dla wybranego typu szkoły.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-slide-toggle formControlName="remote">Projekt/konkurs zdalny?</mat-slide-toggle>
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Miejscowość</mat-label>
+        <input matInput formControlName="city" />
+        @if (form.get('city')?.touched && form.get('city')?.invalid) {
+          <mat-error>Miejscowość jest wymagana, jeśli konkurs/projekt nie jest zdalny.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Link do strony z regulaminem/informacjami</mat-label>
+        <input matInput formControlName="link" />
+        @if (form.get('link')?.touched && form.get('link')?.invalid) {
+          <mat-error>Link do regulaminu/informacji jest wymagany.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Data rozpoczęcia</mat-label>
+        <input matInput type="date" formControlName="beginDate" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Data zakończenia</mat-label>
+        <input matInput type="date" formControlName="endDate" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Obecna liczba osób</mat-label>
+        <input matInput type="number" formControlName="currentPeople" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Min osób</mat-label>
+        <input matInput type="number" formControlName="minPeople" />
+        @if ((form.get('minPeople')?.touched || form.get('maxPeople')?.touched) && form.errors?.['minmax']) {
+          <mat-error>Minimalna liczba osób nie może być większa niż maksymalna.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Max osób</mat-label>
+        <input matInput type="number" formControlName="maxPeople" />
+        @if ((form.get('minPeople')?.touched || form.get('maxPeople')?.touched) && form.errors?.['minmax']) {
+          <mat-error>Maksymalna liczba osób nie może być mniejsza niż minimalna.</mat-error>
+        }
+      </mat-form-field>
+
+      <section class="action-buttons">
+        <button class="gradient" type="submit">Zapisz</button>
+      </section>
+    </form>
+  </mat-card-content>
+</mat-card>

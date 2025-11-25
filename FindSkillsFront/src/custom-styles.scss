@@ -1,0 +1,163 @@
+
+// VARIABLES
+html {
+  --gradient-color-1: var(--mat-sys-primary); //#0cb5aa;
+  --gradient-color-2: var(--mat-sys-secondary);  //#65d48c
+}
+
+// CUSTOM SELECTOR STYLES
+
+h1, h2, strong {
+  color: var(--mat-sys-primary);
+}
+
+::selection {
+  background-color: var(--mat-sys-secondary);
+  color: black !important;
+}
+.text-gradient::selection {
+  background-clip: initial;
+  -webkit-text-fill-color: initial;
+}
+
+img {
+  user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+// CUSTOM CLASSES
+
+.text-gradient {
+  background: linear-gradient(90deg, var(--gradient-color-1) 0%, var(--gradient-color-2) 100%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient {
+  background: linear-gradient(135deg, var(--gradient-color-1) 0%, var(--gradient-color-2) 100%);
+  color: #000000;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.blurred-card {
+  background: transparent !important;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+mat-card.blurred-card {
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+.hover-animation {
+  transition: transform 0.4s ease;
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+.stronger-hover-animation {
+  transition: transform 0.4s ease;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+button.gradient, .action-buttons button {
+  min-height: 40px;
+  border: 0;
+  border-radius: 100px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+
+  transition: transform 0.4s ease;
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.outline {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: inherit;
+  padding: 8px 14px;
+}
+button.outline {
+  background: var(--mat-sys-surface) !important;
+  min-height: 40px;
+  border-radius: 100px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+
+  transition: transform 0.4s ease;
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+/* Shared form styles that affect projected content inside app-form */
+.form-grid {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.form-grid mat-form-field,
+.form-grid input,
+.form-grid textarea,
+.form-grid select {
+  width: 100%;
+}
+
+.full { width: 100%; }
+
+/* Button styles used inside forms */
+.gradient {
+  background: linear-gradient(90deg, var(--mat-sys-primary), var(--mat-sys-secondary));
+  color: var(--mat-sys-background);
+  border: 0;
+  padding: 10px 16px;
+  border-radius: 999px;
+}
+
+// ACTION BUTTONS 
+.action-buttons {
+  display: flex;
+  margin: 32px 0;
+  gap: 8px;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  > * {
+    width: 60%;
+  }
+
+  button {
+    min-height: 40px;
+    border: 0;
+    border-radius: 100px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 8px 16px;
+  }
+
+  button.outline {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: inherit;
+  }
+}
+

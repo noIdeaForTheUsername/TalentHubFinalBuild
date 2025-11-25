@@ -1,0 +1,30 @@
+@let profile = this.profile();
+
+<mat-card class="profile-card hover-animation" [routerLink]="`/profiles/${profile.id}`">
+  <div class="card-top">
+    <img class="avatar" src="avatar.png" alt="avatar" />
+    <div class="main-info">
+      <div class="login">{{ profile.login }}</div>
+      <div class="meta">{{ profile | readableClass }}</div>
+      <div class="meta">{{ profile.city }}</div>
+    </div>
+  </div>
+
+  <mat-card-content>
+    <div class="small-label">Przedmioty/umiejętności</div>
+    @if (profile.favoriteSubjects?.length) {
+      <div class="small-text">{{ profile.favoriteSubjects }}</div>
+    }
+    @else {
+      <div class="small-text"><i>Brak informacji</i></div>
+    }
+
+    <div class="small-label">O sobie</div>
+    @if (profile.bio?.length) {
+      <div class="small-text">{{ profile.bio }}</div>
+    }
+    @else {
+      <div class="small-text"><i>Brak informacji</i></div>
+    }
+  </mat-card-content>
+</mat-card>

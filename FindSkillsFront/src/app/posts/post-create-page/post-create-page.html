@@ -1,0 +1,8 @@
+<app-header></app-header>
+
+<main class="posts-wrap">
+  <div class="create-container">
+    <app-post-form [type]="defaultType()" (submitPost)="create($event)" submitLabel="Utwórz" title="Utwórz nowy post"></app-post-form>
+    <app-loading [error]="this.postService.error()" [loading]="this.submitting()"/>
+  </div>
+</main>

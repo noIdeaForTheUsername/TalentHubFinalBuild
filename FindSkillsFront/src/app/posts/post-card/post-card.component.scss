@@ -1,0 +1,49 @@
+:host { display: block; }
+
+mat-card.post-card {
+  display: block;
+  width: 100%;
+  padding: 10px;
+
+  background: var(--mat-sys-surface-container-highest);
+  border: 2px solid var(--gradient-color-1);
+  transition: border-color 0.4s ease, transform 0.4s ease;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--gradient-color-2);
+  }
+}
+
+.description {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.9rem;
+}
+
+.card-top {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.meta-info {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.9rem;
+  p {
+    margin: 0;
+  }
+}
+
+.small-label {
+  margin-top: 12px;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.65);
+}
+
+.small-text {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.92rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

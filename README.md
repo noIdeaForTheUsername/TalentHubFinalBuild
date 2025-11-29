@@ -30,19 +30,21 @@ DB_NAME=findskills_dev
 
 5. !!! W pliku index.html otrzymanym w wyniku buildu backendu należy zmienić 2 rzeczy:
   A. URL do serwera backendowego (nie lokalny, tylko "względem klienta" - przeglądarka użytkownika będzie wysyłać zapytania na ten adres). Np.:
-    <script>
+    ```<script>
       window.__APP_CONFIG__ = {
         api_url: 'https://chmuraim.dynv6.net:4430',  // <---- TU! NIE ZOSTAWIAJ / NA KOŃCU!
       };
     </script>
+    ```
     Kod klienta automatycznie dokleja "/api/..." do tego URL. Ścieżki zaczynające się od "/api" powinny być kierowane do endpointów serwera zamiast do index.html.
     Uwaga: wszystkie endpointy zdefiniowane na serwerze faktycznie zaczynają się już od "/api/...". Ten fragment nie powinien być "ucinany" np. po przejściu przez reverse proxy
   B. Base URL:
-    <base href="/">
+    ```<base href="/">```
     W miejscu "href" podajemy route głównej ścieżki widoczny w przeglądarce. Np. jeśli nie hostujemy strony głównej na ścieżce root (/), tylko adres
-    głównej strony to np. https://przemekgrabecki.ddns.net/FindSkillsFront/browser/, to wstawiamy <base href="/FindSkillsFront/browser/">. Stamtąd przeglądarka będzie pobierać np. CSS i grafiki.
+    głównej strony to np. https://przemekgrabecki.ddns.net/FindSkillsFront/browser/, to wstawiamy ```<base href="/FindSkillsFront/browser/">```. Stamtąd przeglądarka będzie pobierać np. CSS i grafiki.
 
 6. Aby uruchomić serwer w trybie produkcyjnym, uruchamiamy w find-skills-backend: "npm install --only=prod", "npm run build", dostajemy skompilowany folder "dist".
    Kopiujemy "dist" oraz "package.json" na serwer. Najlepiej dać oba z nich OBOK SIEBIE w tej samej lokalizacji. W tej lokalizacji (z package.json oraz resztą plików w ./dist/...) uruchamiamy:
    npm run start:prod
    Domyślny port to 3000 (localhost).
+
